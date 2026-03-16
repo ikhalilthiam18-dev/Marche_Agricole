@@ -4,7 +4,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-change-moi-plus-tard'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ikhalilthiam18-dev.i.khalil.thiam.com', '127.0.0.1', 'localhost']
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
