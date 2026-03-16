@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Catalogue des produits - Marché Agricole{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    
+    <!-- En-tête -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h2 class="mb-1">🛒 Catalogue des Produits</h2>
+            <p class="text-muted mb-0">Découvrez les meilleurs produits frais de nos agriculteurs</p>
+        </div>
+
+        <!-- Boutons visibles pour agriculteur -->
+        {% if user.is_authenticated and user.est_agriculteur %}
+        <div class="mt-3 mt-md-0 d-flex gap-2">
+            <a href="{% url 'ajouter_produit' %}" class="btn btn-success">
+                ➕ Ajouter un produit
+            </a>
+            <a href="{% url 'dashboard_agriculteur' %}" class="btn btn-outline-success">
+                📊 Mon dashboard
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if produits %}
+    <div class="row">
+        {% for produit in produits %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+
+                {% if produit.image %}
+                    <img src="{{ produit.image.url }}" class="card-img-top" alt="{{ produit.nom }}" style="height: 220px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                        <span class="text-muted">Aucune image</span>
+                    </div>
+                {% endif %}
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ produit.nom }}</h5>
+
+                    <p class="card-text text-muted">
+                        {{ produit.description|truncatewords:18 }}
+                    </p>
+
+                    <p class="mb-1">
+                        <strong>Prix :</strong>
+                        <span class="text-success fw-bold">{{ produit.prix }} FCFA</span>
+                    </p>
+
+                    <p class="mb-1">
+                        <strong>Stock :</strong> {{ produit.quantite_stock }}
+                    </p>
+
+                    <p class="mb-3">
+                        <strong>Agriculteur :</strong> {{ produit.agriculteur.username }}
+                    </p>
+
+                    <div class="mt-auto d-grid gap-2">
+                        <a href="{% url 'detail_produit' produit.id %}" class="btn btn-outline-success">
+                            👁️ Voir détails
+                        </a>
+
+                        {% if user.is_authenticated and not user.est_agriculteur %}
+                            <a href="{% url 'commandes:ajouter_au_panier' produit.id %}" class="btn btn-success">
+                                🛒 Ajouter au panier
+                            </a>
+                        {% elif not user.is_authenticated %}
+                            <a href="{% url 'connexion' %}?next={% url 'catalogue' %}" class="btn btn-success">
+                                🔐 Connectez-vous pour acheter
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    <!-- CRUD visible sur chaque carte si agriculteur propriétaire -->
+                    {% if user.is_authenticated and user.est_agriculteur and produit.agriculteur == user %}
+                    <div class="mt-3 d-flex gap-2">
+                        <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-warning btn-sm w-50">
+                            Modifier
+                        </a>
+                        <a href="{% url 'supprimer_produit' produit.id %}" class="btn btn-danger btn-sm w-50">
+                            Supprimer
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            Aucun produit disponible pour le moment.
+        </div>
+
+        <!-- Même si aucun produit, l'agriculteur peut ajouter -->
+        {% if user.is_authenticated and user.est_agriculteur %}
+        <div class="text-center mt-3">
+            <a href="{% url 'ajouter_produit' %}" class="btn btn-success btn-lg">
+                ➕ Ajouter mon premier produit
+            </a>
+        </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

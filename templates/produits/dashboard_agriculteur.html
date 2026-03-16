@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Agriculteur - Marché Agricole{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">🌾 Dashboard Agriculteur</h2>
+
+    <!-- Statistiques -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-success shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Produits</h5>
+                    <h3>{{ total_produits }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-primary shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Disponibles</h5>
+                    <h3>{{ produits_disponibles }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-secondary shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Indisponibles</h5>
+                    <h3>{{ produits_indisponibles }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-warning shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Commandes reçues</h5>
+                    <h3>{{ total_commandes }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section CRUD visible -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">📦 Mes Produits</h4>
+                <a href="{% url 'ajouter_produit' %}" class="btn btn-success btn-sm">
+                    + Ajouter un produit
+                </a>
+            </div>
+
+            {% if produits %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Image</th>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                            <th>Stock</th>
+                            <th>Disponible</th>
+                            <th>Date</th>
+                            <th style="width: 180px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produit in produits %}
+                        <tr>
+                            <td>
+                                {% if produit.image %}
+                                    <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" width="60" height="60" style="object-fit: cover; border-radius: 8px;">
+                                {% else %}
+                                    <span class="text-muted">Aucune image</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ produit.nom }}</td>
+                            <td>{{ produit.prix }} FCFA</td>
+                            <td>{{ produit.quantite_stock }}</td>
+                            <td>
+                                {% if produit.disponible %}
+                                    <span class="badge bg-success">Oui</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Non</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ produit.date_creation|date:"d/m/Y" }}</td>
+                            <td>
+                                <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-warning btn-sm mb-1">
+                                    Modifier
+                                </a>
+
+                                <a href="{% url 'supprimer_produit' produit.id %}" class="btn btn-danger btn-sm mb-1">
+                                    Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <div class="alert alert-info">
+                    Vous n’avez encore ajouté aucun produit.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Commandes reçues -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="mb-3">🛒 Commandes reçues</h4>
+
+            {% if commandes_recues %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID Commande</th>
+                            <th>Client</th>
+                            <th>Date</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commande in commandes_recues %}
+                        <tr>
+                            <td>#{{ commande.id }}</td>
+                            <td>{{ commande.client.username }}</td>
+                            <td>{{ commande.date_commande|date:"d/m/Y H:i" }}</td>
+                            <td>{{ commande.statut }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <div class="alert alert-secondary">
+                    Aucune commande reçue pour le moment.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

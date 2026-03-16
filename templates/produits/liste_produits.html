@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Produits - Marché Agricole{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h2 class="mb-1">Catalogue des Produits</h2>
+            <p class="text-muted mb-0">Découvrez les produits disponibles sur Marché Agricole.</p>
+        </div>
+
+        {% if user.is_authenticated and user.type_utilisateur == 'agriculteur' %}
+            <div class="d-flex gap-2">
+                <a href="{% url 'produits:ajouter_produit' %}" class="btn btn-success">
+                    + Ajouter un produit
+                </a>
+                <a href="{% url 'produits:dashboard_agriculteur' %}" class="btn btn-outline-success">
+                    Mon dashboard
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        {% for produit in produits %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+
+                    {% if produit.image %}
+                        <img src="{{ produit.image.url }}" class="card-img-top" alt="{{ produit.nom }}" style="height: 220px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                            <span class="text-muted">Aucune image</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ produit.nom }}</h5>
+                        <p class="card-text text-muted">{{ produit.description|truncatechars:100 }}</p>
+                        <p class="mb-1"><strong>Prix :</strong> {{ produit.prix }} FCFA</p>
+                        <p class="mb-1"><strong>Stock :</strong> {{ produit.quantite_stock }}</p>
+                        <p class="mb-0">
+                            <strong>Agriculteur :</strong>
+                            {% if produit.agriculteur %}
+                                {{ produit.agriculteur.username }}
+                            {% else %}
+                                Non défini
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <div class="card-footer bg-white border-0 d-flex flex-wrap gap-2">
+                        <a href="{% url 'produits:detail_produit' produit.id %}" class="btn btn-outline-primary btn-sm">
+                            Voir détails
+                        </a>
+
+                        {% if user.is_authenticated and user.type_utilisateur == 'agriculteur' and produit.agriculteur == user %}
+                            <a href="{% url 'produits:modifier_produit' produit.id %}" class="btn btn-warning btn-sm">
+                                Modifier
+                            </a>
+                            <a href="{% url 'produits:supprimer_produit' produit.id %}" class="btn btn-danger btn-sm">
+                                Supprimer
+                            </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    Aucun produit disponible pour le moment.
+                </div>
+
+                {% if user.is_authenticated and user.type_utilisateur == 'agriculteur' %}
+                    <a href="{% url 'produits:ajouter_produit' %}" class="btn btn-success">
+                        Ajouter le premier produit
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

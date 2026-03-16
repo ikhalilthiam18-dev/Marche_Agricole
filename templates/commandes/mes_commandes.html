@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">📦 Mes commandes</h2>
+
+{% if commandes %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th>Paiement</th>
+                    <th>Total</th>
+                    <th>Détails</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for commande in commandes %}
+                <tr>
+                    <td>#{{ commande.id }}</td>
+                    <td>{{ commande.date_commande|date:"d/m/Y H:i" }}</td>
+                    <td>{{ commande.get_statut_display }}</td>
+                    <td>{{ commande.get_statut_paiement_display }}</td>
+                    <td>{{ commande.total }} FCFA</td>
+                    <td>
+                        <a href="{% url 'commandes:detail_commande' commande.id %}" class="btn btn-info btn-sm">
+                            Voir
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-secondary">
+    Vous n'avez encore passé aucune commande.
+</div>
+{% endif %}
+{% endblock %}

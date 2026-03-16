@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3 shadow-sm">
+    <div class="container-fluid py-3">
+        <h1 class="display-5 fw-bold">Bienvenue sur Marché Agricole 🌱</h1>
+        <p class="col-md-8 fs-5">
+            Une plateforme web responsive qui permet aux agriculteurs de vendre directement
+            leurs produits aux consommateurs avec paiement mobile.
+        </p>
+       <a href="{% url 'catalogue' %}" class="btn btn-success btn-lg">Voir les produits</a>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'inscription' %}" class="btn btn-outline-primary btn-lg">Créer un compte</a>
+        {% endif %}
+    </div>
+</div>
+
+<h2 class="mb-4">Produits récents</h2>
+
+<div class="row">
+    {% for produit in produits_recents %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                {% if produit.image %}
+                    <img src="{{ produit.image.url }}" class="card-img-top" style="height: 220px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                        <span class="text-muted">Pas d'image</span>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ produit.nom }}</h5>
+                    <p class="card-text text-muted">{{ produit.description|truncatechars:80 }}</p>
+                    <p class="fw-bold text-success">{{ produit.prix }} FCFA</p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Aucun produit disponible pour le moment.</p>
+    {% endfor %}
+</div>
+{% endblock %}

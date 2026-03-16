@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">🧾 Détail de la commande #{{ commande.id }}</h2>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <p><strong>Date :</strong> {{ commande.date_commande|date:"d/m/Y H:i" }}</p>
+        <p><strong>Statut :</strong> {{ commande.get_statut_display }}</p>
+        <p><strong>Paiement :</strong> {{ commande.get_statut_paiement_display }}</p>
+        <p><strong>Total :</strong> {{ commande.total }} FCFA</p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4>Produits commandés</h4>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix unitaire</th>
+                    <th>Quantité</th>
+                    <th>Sous-total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in commande.items.all %}
+                <tr>
+                    <td>{{ item.produit.nom }}</td>
+                    <td>{{ item.prix_unitaire }} FCFA</td>
+                    <td>{{ item.quantite }}</td>
+                    <td>{{ item.sous_total }} FCFA</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

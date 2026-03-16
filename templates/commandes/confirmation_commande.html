@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body text-center p-5">
+        <h1 class="text-success mb-3">✅ Commande confirmée !</h1>
+        <p class="lead">Votre commande <strong>#{{ commande.id }}</strong> a été enregistrée avec succès.</p>
+
+        <hr>
+
+        <p><strong>Montant total :</strong> <span class="text-success">{{ commande.total }} FCFA</span></p>
+        <p><strong>Mode de paiement :</strong> {{ commande.get_mode_paiement_display }}</p>
+        <p><strong>Statut du paiement :</strong> {{ commande.get_statut_paiement_display }}</p>
+
+        {% if commande.reference_paiement %}
+            <p><strong>Référence :</strong> {{ commande.reference_paiement }}</p>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{% url 'mes_commandes' %}" class="btn btn-primary me-2">Voir mes commandes</a>
+            <a href="{% url 'accueil' %}" class="btn btn-outline-success">Retour à l'accueil</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

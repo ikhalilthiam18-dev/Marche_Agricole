@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titre }} - Marché Agricole{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">{{ titre }}</h3>
+                </div>
+
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <strong>Veuillez corriger les erreurs ci-dessous.</strong>
+                            </div>
+                        {% endif %}
+
+                        <!-- Nom -->
+                        <div class="mb-3">
+                            <label for="{{ form.nom.id_for_label }}" class="form-label">Nom du produit</label>
+                            {{ form.nom }}
+                            {% if form.nom.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.nom.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.description.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Prix -->
+                        <div class="mb-3">
+                            <label for="{{ form.prix.id_for_label }}" class="form-label">Prix (FCFA)</label>
+                            {{ form.prix }}
+                            {% if form.prix.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.prix.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Quantité -->
+                        <div class="mb-3">
+                            <label for="{{ form.quantite_stock.id_for_label }}" class="form-label">Quantité en stock</label>
+                            {{ form.quantite_stock }}
+                            {% if form.quantite_stock.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.quantite_stock.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Disponible -->
+                        <div class="form-check mb-3">
+                            {{ form.disponible }}
+                            <label class="form-check-label" for="{{ form.disponible.id_for_label }}">
+                                Produit disponible
+                            </label>
+                            {% if form.disponible.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.disponible.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Image -->
+                        <div class="mb-3">
+                            <label for="{{ form.image.id_for_label }}" class="form-label">Image du produit</label>
+                            {{ form.image }}
+                            {% if form.image.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.image.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Aperçu image existante (si modification) -->
+                        {% if form.instance.image %}
+                        <div class="mb-3">
+                            <p class="mb-2"><strong>Image actuelle :</strong></p>
+                            <img src="{{ form.instance.image.url }}" alt="{{ form.instance.nom }}" width="150" class="rounded shadow-sm">
+                        </div>
+                        {% endif %}
+
+                        <!-- Boutons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'dashboard_agriculteur' %}" class="btn btn-secondary">
+                                ← Retour
+                            </a>
+
+                            <button type="submit" class="btn btn-success">
+                                {% if titre == "Modifier le produit" %}
+                                    💾 Enregistrer les modifications
+                                {% else %}
+                                    ➕ Ajouter le produit
+                                {% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

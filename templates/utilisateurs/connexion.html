@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 500px;">
+    <h2>Connexion</h2>
+
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+
+        <input type="hidden" name="next" value="{{ next }}">
+
+        <div class="mb-3">
+            <label class="form-label">Nom d'utilisateur</label>
+            {{ form.username }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mot de passe</label>
+            {{ form.password }}
+        </div>
+
+        <button type="submit" class="btn btn-success">Se connecter</button>
+    </form>
+</div>
+{% endblock %}

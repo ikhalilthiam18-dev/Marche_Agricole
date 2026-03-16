@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Supprimer produit - Marché Agricole{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0">⚠️ Confirmation de suppression</h3>
+                </div>
+
+                <div class="card-body text-center">
+                    <p class="fs-5">
+                        Voulez-vous vraiment supprimer ce produit ?
+                    </p>
+
+                    <div class="alert alert-warning">
+                        <strong>{{ produit.nom }}</strong><br>
+                        Prix : {{ produit.prix }} FCFA
+                    </div>
+
+                    {% if produit.image %}
+                        <div class="mb-3">
+                            <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" width="180" class="rounded shadow-sm">
+                        </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="{% url 'dashboard_agriculteur' %}" class="btn btn-secondary">
+                                Annuler
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                🗑️ Oui, supprimer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

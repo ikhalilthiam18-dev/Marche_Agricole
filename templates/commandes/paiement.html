@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">💳 Paiement de la commande</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4 class="mb-3">Récapitulatif du panier</h4>
+
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Prix</th>
+                                <th>Quantité</th>
+                                <th>Sous-total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                            <tr>
+                                <td>{{ item.produit.nom }}</td>
+                                <td>{{ item.produit.prix }} FCFA</td>
+                                <td>{{ item.quantite }}</td>
+                                <td class="fw-bold">{{ item.sous_total }} FCFA</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="text-end mt-3">
+                    Total : <span class="text-success">{{ panier.total_panier }} FCFA</span>
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-3">Choisir un paiement</h4>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="mode_paiement" id="wave" value="wave" checked>
+                        <label class="form-check-label" for="wave">
+                            🌊 Wave
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="mode_paiement" id="orange_money" value="orange_money">
+                        <label class="form-check-label" for="orange_money">
+                            🟠 Orange Money
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="radio" name="mode_paiement" id="cash_on_delivery" value="cash_on_delivery">
+                        <label class="form-check-label" for="cash_on_delivery">
+                            🚚 Paiement à la livraison
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">
+                        Confirmer le paiement
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
