@@ -3,9 +3,14 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-change-moi-plus-tard'
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [".vercel.app"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    ".vercel.app",
+    "marche-agricole.vercel.app",
+]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -79,8 +84,10 @@ USE_I18N = True
 USE_TZ = True
 
 
+
 CSRF_TRUSTED_ORIGINS = [
     "https://*.vercel.app",
+    "https://marche-agricole.vercel.app",
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
