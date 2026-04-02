@@ -4,12 +4,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-change-moi-plus-tard'
 DEBUG = True
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    ".vercel.app",   # accepte tous les sous-domaines Vercel
-]
 
+ALLOWED_HOSTS = [".vercel.app"]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -83,8 +79,13 @@ USE_I18N = True
 USE_TZ = True
 
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.vercel.app",
+]
 
-
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+]
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
