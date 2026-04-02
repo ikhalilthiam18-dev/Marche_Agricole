@@ -1,9 +1,11 @@
 from pathlib import Path
-
+import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-change-moi-plus-tard'
-DEBUG = True
+
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
+
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
