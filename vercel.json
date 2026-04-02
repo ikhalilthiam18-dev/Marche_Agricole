@@ -1,15 +1,9 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "Marche_Agricole/wsgi.py",
-      "use": "@vercel/python"
-    }
+    { "src": "Marche_Agricole/wsgi.py", "use": "@vercel/python" }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "Marche_Agricole/wsgi.py"
-    }
+    { "src": "/(.*)", "dest": "Marche_Agricole/wsgi.py" }
   ]
 }
