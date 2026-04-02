@@ -9,14 +9,10 @@ SECRET_KEY = 'django-insecure-change-moi-plus-tard'
 DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 import os
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
-
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "marche-agricole.vercel.app",
-    ".vercel.app",  # autorise tous les sous-domaines vercel.app
-]
+ALLOWED_HOSTS = os.getenv(
+    "DJANGO_ALLOWED_HOSTS",
+    "127.0.0.1,localhost,marche-agricole.vercel.app,.vercel.app"
+).split(",")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
