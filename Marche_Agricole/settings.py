@@ -11,8 +11,9 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 # Autoriser localhost + domaine principal + tous les sous-domaines vercel.app
 ALLOWED_HOSTS = os.getenv(
     "DJANGO_ALLOWED_HOSTS",
-    "127.0.0.1,localhost,marche-agricole.vercel.app"
+    "127.0.0.1,localhost,.vercel.app"
 ).split(",")
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
