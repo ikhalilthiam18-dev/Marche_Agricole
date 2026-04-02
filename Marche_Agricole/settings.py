@@ -1,8 +1,5 @@
 from pathlib import Path
 
-
-from shlex import split
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-change-moi-plus-tard'
@@ -11,8 +8,8 @@ DEBUG = False
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    ".vercel.app",
     "marche-agricole.vercel.app",
+    ".vercel.app",  # autorise tous les sous-domaines vercel.app
 ]
 
 INSTALLED_APPS = [
@@ -34,7 +31,6 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -68,18 +64,10 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 LANGUAGE_CODE = 'fr-fr'
@@ -87,15 +75,19 @@ TIME_ZONE = 'Africa/Dakar'
 USE_I18N = True
 USE_TZ = True
 
-
 CSRF_TRUSTED_ORIGINS = [
     "https://*.vercel.app",
+    "https://marche-agricole.vercel.app",
+]
+
+CORS_ALLOWED_ORIGINS = [
     "https://marche-agricole.vercel.app",
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.vercel\.app$",
 ]
+
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -106,10 +98,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'utilisateurs.Utilisateur'
-
-CORS_ALLOWED_ORIGINS = [
-    "https://marche-agricole.vercel.app",
-]
 
 # URLs pour login / logout
 LOGIN_URL = '/connexion/'
