@@ -1,15 +1,18 @@
 from pathlib import Path
-import os
+
+from shlex import split
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-change-moi-plus-tard'
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = False
 
-ALLOWED_HOSTS = os.getenv(
-    "ALLOWED_HOSTS",
-    "127.0.0.1,localhost,.vercel.app,marche-agricole.vercel.app"
-).split(",")
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    ".vercel.app",
+    "marche-agricole.vercel.app",
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -84,11 +87,10 @@ USE_I18N = True
 USE_TZ = True
 
 
-
-CSRF_TRUSTED_ORIGINS = os.getenv(
-    "CSRF_TRUSTED_ORIGINS",
-    "https://*.vercel.app,https://marche-agricole.vercel.app"
-).split(",")
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.vercel.app",
+    "https://marche-agricole.vercel.app",
+]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.vercel\.app$",
