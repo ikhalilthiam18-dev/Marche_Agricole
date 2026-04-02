@@ -7,6 +7,9 @@ SECRET_KEY = 'django-insecure-change-moi-plus-tard'
 
 # DEBUG contrôlé par variable d'environnement
 DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
+import os
+
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
