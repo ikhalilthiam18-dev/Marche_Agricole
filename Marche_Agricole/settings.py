@@ -3,10 +3,8 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-change-moi-plus-tard'
-
-# IMPORTANT : en local pour afficher les images
-DEBUG = True
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-change-moi-plus-tard")
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     ".vercel.app",
@@ -20,8 +18,18 @@ CSRF_TRUSTED_ORIGINS = [
     "https://marche-agricole.vercel.app",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# IMPORTANT POUR LES FORMULAIRES EN PROD HTTPS
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
 
+# Utile sur Vercel / proxy HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Facultatif mais souvent utile
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.vercel\.app$",
 ]
@@ -39,6 +47,8 @@ INSTALLED_APPS = [
     'commandes',
 
     'corsheaders',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -96,8 +106,19 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# MEDIA en local uniquement (debug)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# ===== CLOUDINARY (PRODUCTION IMAGES) =====
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+if not DEBUG:
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
