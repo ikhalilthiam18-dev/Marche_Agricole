@@ -5,11 +5,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-change-moi-plus-tard'
 
-
-
+# DEBUG contrôlé par variable d'environnement
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
 # Autoriser localhost + domaine principal + tous les sous-domaines vercel.app
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     ".vercel.app",
@@ -17,12 +17,6 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
 ]
-CSRF_TRUSTED_ORIGINS = [
-    "https://*.vercel.app",
-    "https://marche-agricole.vercel.app",
-]
-
-CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -38,6 +32,16 @@ INSTALLED_APPS = [
     "corsheaders",
 ]
 
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
 
 ROOT_URLCONF = 'Marche_Agricole.urls'
 
@@ -77,6 +81,14 @@ TIME_ZONE = 'Africa/Dakar'
 USE_I18N = True
 USE_TZ = True
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.vercel.app",
+    "https://marche-agricole.vercel.app",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://marche-agricole.vercel.app",
+]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.vercel\.app$",
