@@ -1,10 +1,10 @@
 from pathlib import Path
 import os
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-change-moi-plus-tard")
-
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-change-moi-plus-tard")
 DEBUG = False
 
 ALLOWED_HOSTS = [
@@ -29,16 +29,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'corsheaders',
-
     'utilisateurs',
     'produits',
     'commandes',
+
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',   # IMPORTANT
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -67,11 +67,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Marche_Agricole.wsgi.application'
 
+# ===== DATABASE POSTGRESQL (Neon / Supabase / Railway etc.) =====
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.getenv("DATABASE_URL")
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -91,10 +91,12 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 ]
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Si tu as des fichiers dans /static local
+STATICFILES_DIRS = [BASE_DIR / 'static'] if (BASE_DIR / 'static').exists() else []
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
