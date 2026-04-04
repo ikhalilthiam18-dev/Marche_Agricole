@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "builds": [
     {
       "src": "marche_agricole/wsgi.py",
@@ -9,7 +9,11 @@
   "routes": [
     {
       "src": "/static/(.*)",
-      "dest": "/static/$1"
+      "dest": "/marche_agricole/static/$1"
+    },
+    {
+      "src": "/media/(.*)",
+      "dest": "/marche_agricole/media/$1"
     },
     {
       "src": "/(.*)",
