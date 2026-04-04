@@ -4,7 +4,9 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-change-moi-plus-tard'
-DEBUG = False
+
+# IMPORTANT : en local pour afficher les images
+DEBUG = True
 
 ALLOWED_HOSTS = [
     ".vercel.app",
@@ -90,7 +92,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # ou [] si le dossier n'existe pas
+STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

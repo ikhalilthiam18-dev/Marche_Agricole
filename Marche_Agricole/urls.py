@@ -2,13 +2,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import accueil   # <-- AJOUT IMPORTANT
+from .views import accueil
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Page d'accueil
-    path('', accueil, name='accueil'),   # <-- AJOUT IMPORTANT
+    path('', accueil, name='accueil'),
 
     # Applications
     path('', include('utilisateurs.urls')),
