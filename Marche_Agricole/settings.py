@@ -3,8 +3,13 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-change-moi-plus-tard")
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+SECRET_KEY = 'django-insecure-change-moi-plus-tard'
+
+
+
+
+# Autoriser localhost + domaine principal + tous les sous-domaines vercel.app
+DEBUG = True
 
 ALLOWED_HOSTS = [
     ".vercel.app",
@@ -12,27 +17,12 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
 ]
-
 CSRF_TRUSTED_ORIGINS = [
     "https://*.vercel.app",
     "https://marche-agricole.vercel.app",
 ]
 
-# IMPORTANT POUR LES FORMULAIRES EN PROD HTTPS
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
-
-# Utile sur Vercel / proxy HTTPS
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Facultatif mais souvent utile
-SESSION_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_SAMESITE = 'Lax'
-
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://.*\.vercel\.app$",
-]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,23 +35,9 @@ INSTALLED_APPS = [
     'utilisateurs',
     'produits',
     'commandes',
-
-    'corsheaders',
-    'cloudinary',
-    'cloudinary_storage',
+    "corsheaders",
 ]
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
 
 ROOT_URLCONF = 'Marche_Agricole.urls'
 
@@ -101,29 +77,23 @@ TIME_ZONE = 'Africa/Dakar'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = '/static/'
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+]
+
+STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# MEDIA en local uniquement (debug)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-# ===== CLOUDINARY (PRODUCTION IMAGES) =====
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
-
-if not DEBUG:
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'utilisateurs.Utilisateur'
 
+# URLs pour login / logout
 LOGIN_URL = '/connexion/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
